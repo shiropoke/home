@@ -113,17 +113,51 @@ body::before{
     /* APEX: カード間隔 */
     #page-apex .card{ margin-bottom:22px; }
     #page-apex .card:last-of-type{ margin-bottom:0; }
+    /* Hamburger */
+.menu-btn{
+  width: 40px; height: 36px; display:inline-flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:4px; border-radius:8px;
+  border:1px solid rgba(255,255,255,.14);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+  cursor:pointer;
+}
+.menu-btn span{
+  display:block; width:18px; height:2px; background: var(--fg); border-radius:2px;
+}
+.menu-panel{
+  position:absolute; right:12px; top:52px; z-index:60;
+  display:flex; flex-direction:column; gap:6px; padding:10px;
+  min-width:160px; border-radius:12px;
+  border:1px solid rgba(255,255,255,.12);
+  background: var(--glass); backdrop-filter: blur(12px) saturate(140%);
+  box-shadow: var(--shadow);
+}
+.menu-panel a{
+  display:block; padding:8px 10px; border-radius:8px; color:var(--fg); text-decoration:none;
+  border:1px solid transparent;
+}
+.menu-panel a:hover{ border-color: rgba(255,255,255,.20); }
   </style>
 </head>
 <body>
   <header class="nav">
-    <div class="brand">Siesta</div>
-    <a class="ghost" href="#home">ホーム</a>
-    <a class="ghost" href="#devices">使用デバイス</a>
-    <a class="ghost" href="#apex">APEX設定</a>
-    <div class="spacer"></div>
-    <button class="ghost" onclick="toggleTheme()" title="テーマ切替">◎</button>
-  </header>
+  <div class="brand">Siesta</div>
+  <a class="ghost" href="#home">ホーム</a>
+  <a class="ghost" href="#devices">使用デバイス</a>
+  <a class="ghost" href="#apex">APEX設定</a>
+  <div class="spacer"></div>
+
+  <!-- ハンバーガー -->
+  <button class="menu-btn" aria-label="メニュー" aria-expanded="false" aria-controls="menu-panel">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="menu-panel" class="menu-panel" hidden>
+    <a href="#home">ホーム</a>
+    <a href="#devices">使用デバイス</a>
+    <a href="#apex">APEX設定</a>
+  </nav>
+</header>
+
 
   <main class="container">
     <!-- Home -->
@@ -166,6 +200,9 @@ body::before{
 
     <!-- Devices -->
     <section id="page-devices" class="page">
+      <div class="actions" style="margin-bottom:12px">
+  <a class="btn" href="#home">← ホームへ戻る</a>
+</div>
       <h2 class="section-title">使用デバイス</h2>
       <p class="lead">私が使用しているデバイスを紹介します。</p>
       <div class="grid">
@@ -192,6 +229,9 @@ body::before{
 
     <!-- Apex -->
     <section id="page-apex" class="page">
+      <div class="actions" style="margin-bottom:12px">
+  <a class="btn" href="#home">← ホームへ戻る</a>
+</div>
       <h2 class="section-title">APEX設定</h2>
       <p class="lead">ビデオ・グラフィック・感度・NVIDIA 3D設定を紹介します。</p>
 
@@ -317,6 +357,18 @@ body::before{
         document.documentElement.style.setProperty('--muted','#5b6a79');
       }
     }
+      // ハンバーガー開閉
+const menuBtn = document.querySelector('.menu-btn');
+const menuPanel = document.getElementById('menu-panel');
+menuBtn?.addEventListener('click', () => {
+  const open = menuPanel.hasAttribute('hidden');
+  if(open){ menuPanel.removeAttribute('hidden'); menuBtn.setAttribute('aria-expanded','true'); }
+  else{ menuPanel.setAttribute('hidden',''); menuBtn.setAttribute('aria-expanded','false'); }
+});
+// リンククリック/ハッシュ変更時は閉じる
+menuPanel?.addEventListener('click', e => { if(e.target.tagName === 'A'){ menuPanel.setAttribute('hidden',''); menuBtn.setAttribute('aria-expanded','false'); }});
+window.addEventListener('hashchange', () => { menuPanel?.setAttribute('hidden',''); menuBtn?.setAttribute('aria-expanded','false'); });
+
   </script>
 </body>
 </html>
