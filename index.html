@@ -10,13 +10,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#0b0f14;
+      --bg:#0d1117;
       --fg:#e8eef6;
       --muted:#a9b1bb;
-      --accent:#7dd3fc; /* シアン */
-      --accent-2:#a78bfa; /* ライラック */
+      --accent:#60a5fa; /* ブルー */
+      --accent-2:#34d399; /* グリーン */
       --card: rgba(255,255,255,0.08);
-      --glass: rgba(255,255,255,0.06);
+      --glass: rgba(255,255,255,0.10);
       --shadow: 0 10px 30px rgba(0,0,0,.45);
       --radius: 20px;
     }
@@ -24,8 +24,11 @@
     html, body{ height:100%; }
     body{
       margin:0;
-      /* 背景：ラディアルをやめて落ち着いたグラデーションに */
-      background: linear-gradient(180deg, #0b0f14 0%, #0a0d12 100%);
+      /* ガラスっぽさを活かしつつ視覚ノイズを最小化した背景 */
+      background:
+        radial-gradient(60rem 60rem at 10% -10%, rgba(96,165,250,.12), transparent 60%),
+        radial-gradient(50rem 50rem at 110% 10%, rgba(52,211,153,.12), transparent 60%),
+        linear-gradient(180deg, #0d1117 0%, #0b0f14 100%);
       color:var(--fg);
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       -webkit-font-smoothing: antialiased;
@@ -34,9 +37,9 @@
     .nav{
       position:sticky; top:0; z-index:50;
       display:flex; align-items:center; gap:.75rem;
-      padding: .9rem 1.1rem; backdrop-filter: blur(10px);
-      background: rgba(14,18,24,.7);
-      border-bottom:1px solid rgba(255,255,255,.06);
+      padding: .9rem 1.1rem; backdrop-filter: blur(10px) saturate(120%);
+      background: linear-gradient(180deg, rgba(13,17,23,.9), rgba(13,17,23,.6));
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
     .brand{ font-weight:700; letter-spacing:.3px; }
     .nav a, .nav button{
@@ -51,28 +54,28 @@
     /* レイアウト */
     .container{ max-width: 1100px; margin: 0 auto; padding: 28px 16px 80px; }
     .section-title{ font-size: 28px; font-weight: 800; letter-spacing:.2px; margin: 8px 0 18px; }
-    .lead{ color:var(--muted); margin: 0 0 28px; }
+    .lead{ color:var(--muted); margin: 0 0 28px; max-width: 72ch; line-height: 1.7; }
 
     /* カード（箱） */
     .grid{ display:grid; gap: 18px; grid-template-columns: repeat( auto-fit, minmax(260px, 1fr) ); }
     .card{
       position:relative; overflow:hidden; border-radius: var(--radius);
       background: var(--glass);
-      border: 1px solid rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.14);
       box-shadow: var(--shadow);
       transition: transform .2s ease, border-color .2s ease;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(12px) saturate(120%);
     }
-    .card:hover{ transform: translateY(-4px); border-color: rgba(255,255,255,.16); }
-    .card .thumb{ height: 140px; background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border-bottom: 1px solid rgba(255,255,255,.08); }
-    .card .content{ padding: 16px; }
-    .pill{ position:absolute; top:10px; left:10px; font:700 11px/1 Inter; padding:.35rem .55rem; border-radius:999px; letter-spacing:.3px; color:#0b0f14; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border: 1px solid rgba(255,255,255,.25); }
+    .card:hover{ transform: translateY(-4px); border-color: rgba(255,255,255,.22); }
+    .card .thumb{ height: 140px; background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border-bottom: 1px solid rgba(255,255,255,.10); }
+    .card .content{ padding: 18px; }
+    .pill{ position:absolute; top:10px; left:10px; font:700 11px/1 Inter; padding:.35rem .55rem; border-radius:999px; letter-spacing:.3px; color:#0d1117; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border: 1px solid rgba(255,255,255,.25); }
     .card h3{ margin: 8px 0 6px; font-size: 18px; }
     .card p{ margin:0; color:var(--muted); font-size: 14px; }
-    .card .actions{ display:flex; gap:8px; padding: 14px 16px 16px; }
+    .card .actions{ display:flex; gap:8px; padding: 14px 18px 18px; }
     .btn{ display:inline-flex; align-items:center; gap:.45rem; cursor:pointer; text-decoration:none; padding:.6rem .8rem; border-radius: 12px; border:1px solid rgba(255,255,255,.14); background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04)); color:var(--fg); font:600 14px/1 Inter; }
     .btn:hover{ border-color: rgba(255,255,255,.24); }
-    .btn.primary{ border-color: rgba(125,211,252,.45); box-shadow: 0 0 0 2px rgba(125,211,252,.16) inset; }
+    .btn.primary{ border-color: rgba(96,165,250,.45); box-shadow: 0 0 0 2px rgba(96,165,250,.16) inset; }
 
     /* ページ切替（ハッシュルーター） */
     .page{ display:none; }
@@ -84,7 +87,7 @@
     .list .item{ padding:14px; border-radius: 14px; background: var(--card); border:1px solid rgba(255,255,255,.10); }
     .item .title{ font-weight:700; }
 
-    .kv{ display:grid; grid-template-columns: 160px 1fr; gap: 10px; align-items:start; }
+    .kv{ display:grid; grid-template-columns: 200px 1fr; gap: 10px; align-items:start; }
     .kv .k{ color:var(--muted); }
     @media (max-width:560px){ .kv{ grid-template-columns: 1fr; } }
 
@@ -106,7 +109,7 @@
     <!-- Home -->
     <section id="page-home" class="page active">
       <h1 class="section-title">ようこそ👋</h1>
-      <p class="lead">Siesta のサイトです。Apex Legends を遊ぶのが好き。ここでは自己紹介と、普段使っているデバイス、APEXのゲーム内およびNVIDIA設定をまとめています。</p>
+      <p class="lead">理系大学生の<strong>Siesta</strong>です。大阪在住 / Apex Legends が好き。ここでは自己紹介と、普段使っているデバイス、APEXのゲーム内およびNVIDIA設定をまとめています。</p>
       <div class="grid">
         <article class="card">
           <div class="pill">NEW</div>
@@ -116,7 +119,7 @@
             <p>学習・ゲーム・制作など、今やっていることと興味分野。</p>
           </div>
           <div class="actions">
-            <a class="btn primary" href="#home">読む</a>
+            <!-- 読むボタンは削除 -->
             <a class="btn" href="#devices">使用デバイスへ</a>
           </div>
         </article>
