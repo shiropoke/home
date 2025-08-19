@@ -8,15 +8,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="icon.png">
   <style>
     :root{
-      --bg:#0b0f14;
+      --bg:#0d1117;
       --fg:#e8eef6;
       --muted:#a9b1bb;
-      --accent:#7dd3fc;
-      --accent-2:#a78bfa;
+      --accent:#60a5fa; /* ブルー */
+      --accent-2:#34d399; /* グリーン */
       --card: rgba(255,255,255,0.08);
-      --glass: rgba(255,255,255,0.08);
+      --glass: rgba(255,255,255,0.10);
       --shadow: 0 12px 32px rgba(0,0,0,.45);
       --radius: 20px;
     }
@@ -24,14 +25,24 @@
     html, body{ height:100%; }
     body{
       margin:0;
+      /* つなぎ目対策：巨大ラディアル×縦グラデ＋微細ノイズ */
       background:
-      radial-gradient(80rem 60rem at 20% -10%, rgba(125,211,252,.10), transparent 60%),
-      radial-gradient(70rem 50rem at 110% 0%, rgba(167,139,250,.08), transparent 60%),
-      linear-gradient(180deg, #0b0f14 0%, #0a0d12 100%);
+        radial-gradient(90rem 70rem at 15% -20%, rgba(96,165,250,.10), transparent 60%),
+        radial-gradient(80rem 60rem at 110% -10%, rgba(167,139,250,.08), transparent 60%),
+        linear-gradient(180deg, #0d1117 0%, #0b0f14 100%);
       color:var(--fg);
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       -webkit-font-smoothing: antialiased;
+      position: relative;
+      overflow-x: hidden;
     }
+    /* 微細ノイズでバンディングをさらに抑える */
+    body::before{
+      content:""; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.08;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" stitchTiles="stitch"/></filter><rect width="120" height="120" filter="url(%23n)" opacity="0.08"/></svg>');
+      background-size: 240px 240px; mix-blend-mode: overlay;
+    }
+
     .nav{
       position:sticky; top:0; z-index:50;
       display:flex; align-items:center; gap:.75rem;
@@ -49,9 +60,9 @@
     .nav .ghost:hover{ color:var(--fg); }
     .spacer{ flex:1; }
 
-    .container{ max-width: 1100px; margin: 0 auto; padding: 28px 16px 80px; }
+    .container{ max-width: 1100px; margin: 0 auto; padding: 28px 16px 80px; position: relative; z-index: 1; }
     .section-title{ font-size: 28px; font-weight: 800; letter-spacing:.2px; margin: 8px 0 18px; }
-    .lead{ color:var(--muted); margin: 0 0 28px; }
+    .lead{ color:var(--muted); margin: 0 0 28px; max-width: 72ch; line-height: 1.7; }
 
     .grid{ display:grid; gap: 18px; grid-template-columns: repeat( auto-fit, minmax(260px, 1fr) ); }
     .card{
@@ -60,26 +71,25 @@
       border: 1px solid rgba(255,255,255,.12);
       box-shadow: var(--shadow);
       transition: transform .2s ease, border-color .2s ease;
-      backdrop-filter: blur(12px) saturate(160%);
+      backdrop-filter: blur(12px) saturate(140%);
     }
     .card:hover{ transform: translateY(-4px); border-color: rgba(255,255,255,.18); }
-    .card .thumb{ height: 140px; background: linear-gradient(135deg, rgba(125,211,252,.2), rgba(167,139,250,.2)); border-bottom: 1px solid rgba(255,255,255,.08); }
+    .card .thumb{ height: 140px; background: linear-gradient(135deg, rgba(96,165,250,.18), rgba(167,139,250,.18)); border-bottom: 1px solid rgba(255,255,255,.08); }
     .card .content{ padding: 18px; }
-    .pill{ position:absolute; top:10px; left:10px; font:700 11px/1 Inter; padding:.35rem .55rem; border-radius:999px; letter-spacing:.3px; color:#0b0f14; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border: 1px solid rgba(255,255,255,.25); }
+    .pill{ position:absolute; top:10px; left:10px; font:700 11px/1 Inter; padding:.35rem .55rem; border-radius:999px; letter-spacing:.3px; color:#0d1117; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border: 1px solid rgba(255,255,255,.25); }
     .card h3{ margin: 8px 0 6px; font-size: 18px; }
     .card p{ margin:0; color:var(--muted); font-size: 14px; }
-    .card .actions{ display:flex; gap:8px; padding: 14px 16px 16px; }
+    .card .actions{ display:flex; gap:8px; padding: 14px 18px 18px; }
     .btn{ display:inline-flex; align-items:center; gap:.45rem; cursor:pointer; text-decoration:none; padding:.6rem .8rem; border-radius: 12px; border:1px solid rgba(255,255,255,.14); background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04)); color:var(--fg); font:600 14px/1 Inter; }
     .btn:hover{ border-color: rgba(255,255,255,.24); }
-    .btn.primary{ border-color: rgba(125,211,252,.45); box-shadow: 0 0 0 2px rgba(125,211,252,.16) inset; }
+    .btn.primary{ border-color: rgba(96,165,250,.45); box-shadow: 0 0 0 2px rgba(96,165,250,.16) inset; }
 
     .page{ display:none; }
     .page.active{ display:block; animation: fade .18s ease-out; }
     @keyframes fade{ from{ opacity:.0; transform: translateY(4px);} to{ opacity:1; transform:none } }
 
-    .list{ display:grid; gap: 14px; }
+    .list{ display:grid; gap: 12px; }
     .list .item{ padding:14px; border-radius: 14px; background: var(--card); border:1px solid rgba(255,255,255,.10); }
-
     .kv{ display:grid; grid-template-columns: 200px 1fr; gap: 10px; align-items:start; }
     .kv .k{ color:var(--muted); }
     @media (max-width:560px){ .kv{ grid-template-columns: 1fr; } }
@@ -87,16 +97,17 @@
     .footer{ margin-top: 44px; color:var(--muted); font-size:12px; text-align:center; }
     .home-hero{ padding: 20px; border-radius: var(--radius); background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.10); }
 
-    /* APEXページのボックス間隔調整 */
-    #page-apex .card { margin-bottom: 22px; }
+    /* APEX: カード間隔 */
+    #page-apex .card{ margin-bottom:22px; }
+    #page-apex .card:last-of-type{ margin-bottom:0; }
   </style>
 </head>
 <body>
   <header class="nav">
     <div class="brand">Siesta</div>
-    <a class="ghost" href="#home" onclick="showPage('home')">ホーム</a>
-    <a class="ghost" href="#devices" onclick="showPage('devices')">使用デバイス</a>
-    <a class="ghost" href="#apex" onclick="showPage('apex')">APEX設定</a>
+    <a class="ghost" href="#home">ホーム</a>
+    <a class="ghost" href="#devices">使用デバイス</a>
+    <a class="ghost" href="#apex">APEX設定</a>
     <div class="spacer"></div>
     <button class="ghost" onclick="toggleTheme()" title="テーマ切替">◎</button>
   </header>
@@ -105,7 +116,7 @@
     <!-- Home -->
     <section id="page-home" class="page active">
       <h1 class="section-title">ようこそ👋</h1>
-      <p class="lead">理系大学生の<span style="font-weight:700;">Siesta</span>です。大阪在住 / Apex Legends を遊ぶのが好き。ここでは自己紹介と、普段使っているデバイス、APEXのゲーム内およびNVIDIA設定をまとめています。</p>
+      <p class="lead">理系大学生の<strong>Siesta</strong>です。大阪在住 / Apex Legends が好き。ここでは自己紹介と、普段使っているデバイス、APEXのゲーム内およびNVIDIA設定をまとめています。</p>
       <div class="grid">
         <article class="card">
           <div class="pill">NEW</div>
@@ -115,7 +126,8 @@
             <p>学習・ゲーム・制作など、今やっていることと興味分野。</p>
           </div>
           <div class="actions">
-            <a class="btn" href="#devices" onclick="showPage('devices')">使用デバイスへ</a>
+            <!-- 「読む」ボタン無し -->
+            <a class="btn" href="#devices">使用デバイスへ</a>
           </div>
         </article>
         <article class="card">
@@ -125,7 +137,7 @@
             <p>モニター・入力デバイス・オーディオなどを箱型カードで一覧。</p>
           </div>
           <div class="actions">
-            <a class="btn primary" href="#devices" onclick="showPage('devices')">開く</a>
+            <a class="btn primary" href="#devices">開く</a>
           </div>
         </article>
         <article class="card">
@@ -135,7 +147,7 @@
             <p>ビデオ・グラフィック・感度・NVIDIA 3D設定を縦並びで見やすく。</p>
           </div>
           <div class="actions">
-            <a class="btn primary" href="#apex" onclick="showPage('apex')">開く</a>
+            <a class="btn primary" href="#apex">開く</a>
           </div>
         </article>
       </div>
@@ -143,15 +155,8 @@
       <div class="home-hero" style="margin-top:22px;">
         <h2 style="margin:8px 0 10px;">自己紹介</h2>
         <div class="list">
-          <div class="item">
-            <div class="kv"><div class="k">名前</div><div class="v">Siesta</div></div>
-          </div>
-          <div class="item">
-            <div class="kv"><div class="k">好き</div><div class="v">Apex Legends / Web制作を勉強中 / ガジェット</div></div>
-          </div>
-          <div class="item">
-            <div class="kv"><div class="k">このサイトについて</div><div class="v">ガジェット製品の紹介や設定を紹介</div></div>
-          </div>
+          <div class="item"><div class="kv"><div class="k">名前</div><div class="v">Siesta</div></div></div>
+          <div class="item"><div class="kv"><div class="k">このサイトについて</div><div class="v">ガジェット製品の紹介や設定を紹介</div></div></div>
         </div>
       </div>
 
@@ -162,117 +167,129 @@
     <section id="page-devices" class="page">
       <h2 class="section-title">使用デバイス</h2>
       <p class="lead">モニター / 入力機器 / オーディオなど。カードは常に縦に積むレイアウトです。</p>
-      <div class="actions" style="margin-top:18px"><a class="btn" href="#home" onclick="showPage('home')">← ホームへ戻る</a></div>
+      <div class="grid">
+        <article class="card"><div class="thumb"></div><div class="content"><h3>Dell G2422HS</h3><p>24型 / 165Hz。メインFPS用。</p></div></article>
+        <article class="card"><div class="thumb"></div><div class="content"><h3>LG 27QN880-B</h3><p>27型 WQHD / Ergoスタンド。</p></div></article>
+        <article class="card"><div class="thumb"></div><div class="content"><h3>Xiaomi モニターライト</h3><p>画面上部ライトバー。</p></div></article>
+        <article class="card"><div class="thumb"></div><div class="content"><h3>Logicool G502 X</h3><p>ゲーミングマウス。</p></div></article>
+        <article class="card"><div class="thumb"></div><div class="content"><h3>EPOMAKER x Aula F75</h3><p>コンパクトメカニカル。</p></div></article>
+        <article class="card"><div class="thumb"></div><div class="content"><h3>BIGBIG WON Blitz2</h3><p>コントローラー。</p></div></article>
+        <article class="card"><div class="thumb"></div><div class="content"><h3>BIGBIG WON Rainbow 2 SE</h3><p>アタッチメント。</p></div></article>
+        <article class="card"><div class="thumb"></div><div class="content"><h3>GameSir G7 Pro</h3><p>有線/無線パッド。</p></div></article>
+        <article class="card"><div class="thumb"></div><div class="content"><h3>Creative Pebble V2</h3><p>デスクトップスピーカー。</p></div></article>
+        <article class="card"><div class="thumb"></div><div class="content"><h3>HyperX QuadCast</h3><p>USBマイク。</p></div></article>
+        <article class="card"><div class="thumb"></div><div class="content"><h3>EPOS GSX 1000 2nd Edition</h3><p>DAC / アンプ。</p></div></article>
+        <article class="card"><div class="thumb"></div><div class="content"><h3>TRN Conch</h3><p>有線イヤホン。</p></div></article>
+        <article class="card"><div class="thumb"></div><div class="content"><h3>iPhone 16 Pro Max</h3><p>スマートフォン。</p></div></article>
+        <article class="card"><div class="thumb"></div><div class="content"><h3>AirPods Pro</h3><p>ワイヤレスイヤホン。</p></div></article>
+        <article class="card"><div class="thumb"></div><div class="content"><h3>Apple Watch Series 10</h3><p>スマートウォッチ。</p></div></article>
+        <article class="card"><div class="thumb"></div><div class="content"><h3>M1 MacBook Air</h3><p>ノートPC。</p></div></article>
+      </div>
+      <div class="actions" style="margin-top:18px"><a class="btn" href="#home">← ホームへ戻る</a></div>
       <p class="footer">更新してほしい文言があれば教えてね。</p>
     </section>
 
     <!-- Apex -->
-    <section id=\"page-apex\" class=\"page\">
-      <h2 class=\"section-title\">APEX設定<\/h2>
-      <p class=\"lead\">全セクションを<strong>縦に並べて<\/strong>表示。モバイルでも読みやすいように余白と行間を最適化。<\/p>
+    <section id="page-apex" class="page">
+      <h2 class="section-title">APEX設定</h2>
+      <p class="lead">全セクションを<strong>縦に並べて</strong>表示。モバイルでも読みやすいように余白と行間を最適化。</p>
 
-      <article class=\"card\">
-        <div class=\"content\">
-          <h3>ビデオ（表示）<\/h3>
-          <div class=\"list\">
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">縦横比<\/div><div class=\"v\">16:10<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">解像度<\/div><div class=\"v\">1728 × 1080<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">明るさ<\/div><div class=\"v\">45%<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">視野(FOV)<\/div><div class=\"v\">108<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">FOVアビリティ・スケーリング<\/div><div class=\"v\">無効<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">スプリント時の視点のゆれ<\/div><div class=\"v\">小<\/div><\/div><\/div>
-          <\/div>
-        <\/div>
-      <\/article>
-
-      <article class=\"card\">
-        <div class=\"content\">
-          <h3>詳細ビデオ（グラフィック）<\/h3>
-          <div class=\"list\">
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">垂直同期<\/div><div class=\"v\">無効<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">NVIDIA Reflex<\/div><div class=\"v\">有効 + ブースト<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">解像度適用の目標fps<\/div><div class=\"v\">0<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">アンチエイリアス<\/div><div class=\"v\">TSAA<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">テクスチャストリーミング割り当て<\/div><div class=\"v\">中 (VRAM:3GB)<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">テクスチャフィルタリング<\/div><div class=\"v\">バイリニア<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">アンビエントオクルージョン品質<\/div><div class=\"v\">無効<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">サンシャドウ範囲<\/div><div class=\"v\">低<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">サンシャドウディテール<\/div><div class=\"v\">低<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">スポットシャドウディテール<\/div><div class=\"v\">無効<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">空間光<\/div><div class=\"v\">無効<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">ダイナミックスポットシャドウ<\/div><div class=\"v\">無効<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">モデルディテール<\/div><div class=\"v\">中<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">マップ詳細<\/div><div class=\"v\">低<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">エフェクトディテール<\/div><div class=\"v\">低<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">衝撃マーク<\/div><div class=\"v\">無効<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">ラグドール<\/div><div class=\"v\">低<\/div><\/div><\/div>
-          <\/div>
-        <\/div>
-      <\/article>
-
-      <article class=\"card\">
-        <div class=\"content\">
-          <h3>感度<\/h3>
-          <div class=\"list\">
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">視点操作<\/div><div class=\"v\">4<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">視点操作（エイム時）<\/div><div class=\"v\">3<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">反応曲線<\/div><div class=\"v\">リニア<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">視点操作デッドゾーン<\/div><div class=\"v\">なし<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">移動スティックのデッドゾーン<\/div><div class=\"v\">小<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">振動<\/div><div class=\"v\">オフ<\/div><\/div><\/div>
-          <\/div>
-        <\/div>
-      <\/article>
-
-      <article class=\"card\">
-        <div class=\"content\">
-          <h3>NVIDIAコントロールパネル（3D設定）<\/h3>
-          <div class=\"list\">
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">イメージ スケーリング<\/div><div class=\"v\">オフ<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">CUDA - GPU<\/div><div class=\"v\">すべて<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">CUDA - システムメモリフォールバックポリシー<\/div><div class=\"v\">ドライバのデフォルト<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">OpenGL GDIの互換性<\/div><div class=\"v\">自動<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">OpenGL レンダリングGPU<\/div><div class=\"v\">ご自身の使用グラフィックボード<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">Vulkan\/OpenGLの既存の方法<\/div><div class=\"v\">自動<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">アンチエイリアシング - FXAA<\/div><div class=\"v\">オフ<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">アンチエイリアシング - ガンマ修正<\/div><div class=\"v\">オン<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">アンチエイリアシング - トランスペアレンシー<\/div><div class=\"v\">オフ<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">アンチエイリアシング - モード<\/div><div class=\"v\">アプリケーションによるコントロール<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">アンチエイリアシング - 設定<\/div><div class=\"v\">4x<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">スレッドした最適化<\/div><div class=\"v\">自動<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">テクスチャフィルタリング - クオリティ<\/div><div class=\"v\">ハイパフォーマンス<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">テクスチャフィルタリング - トリリニア最適化<\/div><div class=\"v\">オン<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">テクスチャフィルタリング - ネガティブLODバイアス<\/div><div class=\"v\">許可<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">テクスチャフィルタリング - 異方性サンプル最適化<\/div><div class=\"v\">オン<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">トリプルバッファリング<\/div><div class=\"v\">オフ<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">バックグランドアプリケーション最大フレームレート<\/div><div class=\"v\">オフ<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">バーチャルリアリティレンダリング前フレーム数<\/div><div class=\"v\">1<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">マルチフレームサンプリングAA（MFAA）<\/div><div class=\"v\">オフ<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">モニターテクノロジ<\/div><div class=\"v\">G-SYNCとの互換性（※モニターがG-SYNCに対応している場合）<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">低遅延モード<\/div><div class=\"v\">オフ<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">優先的に使用するリフレッシュレート<\/div><div class=\"v\">利用可能な最高値<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">垂直同期<\/div><div class=\"v\">3Dアプリケーション設定を使用する<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">最大フレームレート<\/div><div class=\"v\">オフ<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">異方性フィルタリング<\/div><div class=\"v\">アプリケーションによるコントロール<\/div><\/div><\/div>
-            <div class=\"item\"><div class=\"kv\"><div class=\"k\">電源管理モード<\/div><div class=\"v\">パフォーマンス最大化を優先<\/div><\/div><\/div>
+      <article class="card">
+        <div class="content">
+          <h3>ビデオ（表示）</h3>
+          <div class="list">
+            <div class="item"><div class="kv"><div class="k">縦横比</div><div class="v">16:10</div></div></div>
+            <div class="item"><div class="kv"><div class="k">解像度</div><div class="v">1728 × 1080</div></div></div>
+            <div class="item"><div class="kv"><div class="k">明るさ</div><div class="v">45%</div></div></div>
+            <div class="item"><div class="kv"><div class="k">視野(FOV)</div><div class="v">108</div></div></div>
+            <div class="item"><div class="kv"><div class="k">FOVアビリティ・スケーリング</div><div class="v">無効</div></div></div>
+            <div class="item"><div class="kv"><div class="k">スプリント時の視点のゆれ</div><div class="v">小</div></div></div>
           </div>
-        <\/div>
-      <\/article>
+        </div>
+      </article>
 
-      <div class=\"actions\" style=\"margin-top:18px\"><a class=\"btn\" href=\"#home\">← ホームへ戻る<\/a><\/div>
-    <\/section>
+      <article class="card">
+        <div class="content">
+          <h3>詳細ビデオ（グラフィック）</h3>
+          <div class="list">
+            <div class="item"><div class="kv"><div class="k">垂直同期</div><div class="v">無効</div></div></div>
+            <div class="item"><div class="kv"><div class="k">NVIDIA Reflex</div><div class="v">有効 + ブースト</div></div></div>
+            <div class="item"><div class="kv"><div class="k">解像度適用の目標fps</div><div class="v">0</div></div></div>
+            <div class="item"><div class="kv"><div class="k">アンチエイリアス</div><div class="v">TSAA</div></div></div>
+            <div class="item"><div class="kv"><div class="k">テクスチャストリーミング割り当て</div><div class="v">中 (VRAM:3GB)</div></div></div>
+            <div class="item"><div class="kv"><div class="k">テクスチャフィルタリング</div><div class="v">バイリニア</div></div></div>
+            <div class="item"><div class="kv"><div class="k">アンビエントオクルージョン品質</div><div class="v">無効</div></div></div>
+            <div class="item"><div class="kv"><div class="k">サンシャドウ範囲</div><div class="v">低</div></div></div>
+            <div class="item"><div class="kv"><div class="k">サンシャドウディテール</div><div class="v">低</div></div></div>
+            <div class="item"><div class="kv"><div class="k">スポットシャドウディテール</div><div class="v">無効</div></div></div>
+            <div class="item"><div class="kv"><div class="k">空間光</div><div class="v">無効</div></div></div>
+            <div class="item"><div class="kv"><div class="k">ダイナミックスポットシャドウ</div><div class="v">無効</div></div></div>
+            <div class="item"><div class="kv"><div class="k">モデルディテール</div><div class="v">中</div></div></div>
+            <div class="item"><div class="kv"><div class="k">マップ詳細</div><div class="v">低</div></div></div>
+            <div class="item"><div class="kv"><div class="k">エフェクトディテール</div><div class="v">低</div></div></div>
+            <div class="item"><div class="kv"><div class="k">衝撃マーク</div><div class="v">無効</div></div></div>
+            <div class="item"><div class="kv"><div class="k">ラグドール</div><div class="v">低</div></div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="content">
+          <h3>感度</h3>
+          <div class="list">
+            <div class="item"><div class="kv"><div class="k">視点操作</div><div class="v">4</div></div></div>
+            <div class="item"><div class="kv"><div class="k">視点操作（エイム時）</div><div class="v">3</div></div></div>
+            <div class="item"><div class="kv"><div class="k">反応曲線</div><div class="v">リニア</div></div></div>
+            <div class="item"><div class="kv"><div class="k">視点操作デッドゾーン</div><div class="v">なし</div></div></div>
+            <div class="item"><div class="kv"><div class="k">移動スティックのデッドゾーン</div><div class="v">小</div></div></div>
+            <div class="item"><div class="kv"><div class="k">振動</div><div class="v">オフ</div></div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="content">
+          <h3>NVIDIAコントロールパネル（3D設定）</h3>
+          <div class="list">
+            <div class="item"><div class="kv"><div class="k">イメージ スケーリング</div><div class="v">オフ</div></div></div>
+            <div class="item"><div class="kv"><div class="k">CUDA - GPU</div><div class="v">すべて</div></div></div>
+            <div class="item"><div class="kv"><div class="k">CUDA - システムメモリフォールバックポリシー</div><div class="v">ドライバのデフォルト</div></div></div>
+            <div class="item"><div class="kv"><div class="k">OpenGL GDIの互換性</div><div class="v">自動</div></div></div>
+            <div class="item"><div class="kv"><div class="k">OpenGL レンダリングGPU</div><div class="v">ご自身の使用グラフィックボード</div></div></div>
+            <div class="item"><div class="kv"><div class="k">Vulkan/OpenGLの既存の方法</div><div class="v">自動</div></div></div>
+            <div class="item"><div class="kv"><div class="k">アンチエイリアシング - FXAA</div><div class="v">オフ</div></div></div>
+            <div class="item"><div class="kv"><div class="k">アンチエイリアシング - ガンマ修正</div><div class="v">オン</div></div></div>
+            <div class="item"><div class="kv"><div class="k">アンチエイリアシング - トランスペアレンシー</div><div class="v">オフ</div></div></div>
+            <div class="item"><div class="kv"><div class="k">アンチエイリアシング - モード</div><div class="v">アプリケーションによるコントロール</div></div></div>
+            <div class="item"><div class="kv"><div class="k">アンチエイリアシング - 設定</div><div class="v">4x</div></div></div>
+            <div class="item"><div class="kv"><div class="k">スレッドした最適化</div><div class="v">自動</div></div></div>
+            <div class="item"><div class="kv"><div class="k">テクスチャフィルタリング - クオリティ</div><div class="v">ハイパフォーマンス</div></div></div>
+            <div class="item"><div class="kv"><div class="k">テクスチャフィルタリング - トリリニア最適化</div><div class="v">オン</div></div></div>
+            <div class="item"><div class="kv"><div class="k">テクスチャフィルタリング - ネガティブLODバイアス</div><div class="v">許可</div></div></div>
+            <div class="item"><div class="kv"><div class="k">テクスチャフィルタリング - 異方性サンプル最適化</div><div class="v">オン</div></div></div>
+            <div class="item"><div class="kv"><div class="k">トリプルバッファリング</div><div class="v">オフ</div></div></div>
+            <div class="item"><div class="kv"><div class="k">バックグランドアプリケーション最大フレームレート</div><div class="v">オフ</div></div></div>
+            <div class="item"><div class="kv"><div class="k">バーチャルリアリティレンダリング前フレーム数</div><div class="v">1</div></div></div>
+            <div class="item"><div class="kv"><div class="k">マルチフレームサンプリングAA（MFAA）</div><div class="v">オフ</div></div></div>
+            <div class="item"><div class="kv"><div class="k">モニターテクノロジ</div><div class="v">G-SYNCとの互換性（※モニターがG-SYNCに対応している場合）</div></div></div>
+            <div class="item"><div class="kv"><div class="k">低遅延モード</div><div class="v">オフ</div></div></div>
+            <div class="item"><div class="kv"><div class="k">優先的に使用するリフレッシュレート</div><div class="v">利用可能な最高値</div></div></div>
+            <div class="item"><div class="kv"><div class="k">垂直同期</div><div class="v">3Dアプリケーション設定を使用する</div></div></div>
+            <div class="item"><div class="kv"><div class="k">最大フレームレート</div><div class="v">オフ</div></div></div>
+            <div class="item"><div class="kv"><div class="k">異方性フィルタリング</div><div class="v">アプリケーションによるコントロール</div></div></div>
+            <div class="item"><div class="kv"><div class="k">電源管理モード</div><div class="v">パフォーマンス最大化を優先</div></div></div>
+          </div>
+        </div>
+      </article>
+
+      <div class="actions" style="margin-top:18px"><a class="btn" href="#home">← ホームへ戻る</a></div>
+    </section>
   </main>
 
   <script>
-    function showPage(name){
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('page-' + name).classList.add('active');
-    }
-    document.getElementById('y').textContent = new Date().getFullYear();
-  </script>
-<script>
     // 年
     document.getElementById('y').textContent = new Date().getFullYear();
+
     // ハッシュルーター（ページ切替）
     const routes = { '#home':'page-home', '#devices':'page-devices', '#apex':'page-apex' };
     function render(){
@@ -284,10 +301,19 @@
     }
     window.addEventListener('hashchange', render);
     render();
+
+    // テーマ切替（文字色と弱い彩度のみ）
     function toggleTheme(){
       const on = document.body.dataset.light === '1';
-      if(on){ delete document.body.dataset.light; document.documentElement.style.setProperty('--fg', '#e8eef6'); document.documentElement.style.setProperty('--muted','#a9b1bb'); }
-      else{ document.body.dataset.light = '1'; document.documentElement.style.setProperty('--fg', '#101418'); document.documentElement.style.setProperty('--muted','#5b6a79'); }
+      if(on){
+        delete document.body.dataset.light;
+        document.documentElement.style.setProperty('--fg', '#e8eef6');
+        document.documentElement.style.setProperty('--muted','#a9b1bb');
+      }else{
+        document.body.dataset.light = '1';
+        document.documentElement.style.setProperty('--fg', '#101418');
+        document.documentElement.style.setProperty('--muted','#5b6a79');
+      }
     }
   </script>
 </body>
