@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ゆきえぬ | Portfolio</title>
-  <meta name="description" content="ゆきえぬの自己紹介 / 使用デバイス / APEX設定" />
+  <title>Siesta | Portfolio</title>
+  <meta name="description" content="Siestaの自己紹介 / 使用デバイス / APEX設定" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -16,7 +16,6 @@
       --accent:#7dd3fc; /* シアン */
       --accent-2:#a78bfa; /* ライラック */
       --card: rgba(255,255,255,0.08);
-      --card-strong: rgba(255,255,255,0.12);
       --glass: rgba(255,255,255,0.06);
       --shadow: 0 10px 30px rgba(0,0,0,.45);
       --radius: 20px;
@@ -25,10 +24,8 @@
     html, body{ height:100%; }
     body{
       margin:0;
-      background:
-        radial-gradient(60rem 60rem at 10% -10%, rgba(125, 211, 252, .18), transparent 60%),
-        radial-gradient(50rem 50rem at 110% 10%, rgba(167, 139, 250, .18), transparent 60%),
-        linear-gradient(180deg, #0b0f14 0%, #0a0d12 100%);
+      /* 背景：ラディアルをやめて落ち着いたグラデーションに */
+      background: linear-gradient(180deg, #0b0f14 0%, #0a0d12 100%);
       color:var(--fg);
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       -webkit-font-smoothing: antialiased;
@@ -38,7 +35,7 @@
       position:sticky; top:0; z-index:50;
       display:flex; align-items:center; gap:.75rem;
       padding: .9rem 1.1rem; backdrop-filter: blur(10px);
-      background: linear-gradient(180deg, rgba(14,18,24,.85), rgba(14,18,24,.55));
+      background: rgba(14,18,24,.7);
       border-bottom:1px solid rgba(255,255,255,.06);
     }
     .brand{ font-weight:700; letter-spacing:.3px; }
@@ -57,10 +54,7 @@
     .lead{ color:var(--muted); margin: 0 0 28px; }
 
     /* カード（箱） */
-    .grid{
-      display:grid; gap: 18px;
-      grid-template-columns: repeat( auto-fit, minmax(260px, 1fr) );
-    }
+    .grid{ display:grid; gap: 18px; grid-template-columns: repeat( auto-fit, minmax(260px, 1fr) ); }
     .card{
       position:relative; overflow:hidden; border-radius: var(--radius);
       background: var(--glass);
@@ -70,27 +64,13 @@
       backdrop-filter: blur(8px);
     }
     .card:hover{ transform: translateY(-4px); border-color: rgba(255,255,255,.16); }
-    .card .thumb{
-      height: 140px; background:
-        radial-gradient(50% 50% at 20% 10%, rgba(125,211,252,.35), transparent 60%),
-        radial-gradient(50% 50% at 90% 30%, rgba(167,139,250,.35), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
+    .card .thumb{ height: 140px; background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border-bottom: 1px solid rgba(255,255,255,.08); }
     .card .content{ padding: 16px; }
-    .pill{
-      position:absolute; top:10px; left:10px; font:700 11px/1 Inter;
-      padding:.35rem .55rem; border-radius:999px; letter-spacing:.3px;
-      color:#0b0f14; background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      border: 1px solid rgba(255,255,255,.25);
-    }
+    .pill{ position:absolute; top:10px; left:10px; font:700 11px/1 Inter; padding:.35rem .55rem; border-radius:999px; letter-spacing:.3px; color:#0b0f14; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border: 1px solid rgba(255,255,255,.25); }
     .card h3{ margin: 8px 0 6px; font-size: 18px; }
     .card p{ margin:0; color:var(--muted); font-size: 14px; }
     .card .actions{ display:flex; gap:8px; padding: 14px 16px 16px; }
-    .btn{ display:inline-flex; align-items:center; gap:.45rem; cursor:pointer; text-decoration:none;
-      padding:.6rem .8rem; border-radius: 12px; border:1px solid rgba(255,255,255,.14);
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
-      color:var(--fg); font:600 14px/1 Inter; }
+    .btn{ display:inline-flex; align-items:center; gap:.45rem; cursor:pointer; text-decoration:none; padding:.6rem .8rem; border-radius: 12px; border:1px solid rgba(255,255,255,.14); background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04)); color:var(--fg); font:600 14px/1 Inter; }
     .btn:hover{ border-color: rgba(255,255,255,.24); }
     .btn.primary{ border-color: rgba(125,211,252,.45); box-shadow: 0 0 0 2px rgba(125,211,252,.16) inset; }
 
@@ -109,16 +89,12 @@
     @media (max-width:560px){ .kv{ grid-template-columns: 1fr; } }
 
     .footer{ margin-top: 44px; color:var(--muted); font-size:12px; text-align:center; }
-    .home-hero{
-      padding: 20px; border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      border:1px solid rgba(255,255,255,.10);
-    }
+    .home-hero{ padding: 20px; border-radius: var(--radius); background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.10); }
   </style>
 </head>
 <body>
   <header class="nav">
-    <div class="brand">ゆきえぬ</div>
+    <div class="brand">Siesta</div>
     <a class="ghost" href="#home">ホーム</a>
     <a class="ghost" href="#devices">使用デバイス</a>
     <a class="ghost" href="#apex">APEX設定</a>
@@ -130,7 +106,7 @@
     <!-- Home -->
     <section id="page-home" class="page active">
       <h1 class="section-title">ようこそ👋</h1>
-      <p class="lead">理系大学生の<span style="font-weight:700;">ゆきえぬ</span>です。大阪在住 / 物理専攻。Apex Legends を遊ぶのが好き。ここでは自己紹介と、普段使っているデバイス、APEXのゲーム内およびNVIDIA設定をまとめています。</p>
+      <p class="lead">Siesta のサイトです。Apex Legends を遊ぶのが好き。ここでは自己紹介と、普段使っているデバイス、APEXのゲーム内およびNVIDIA設定をまとめています。</p>
       <div class="grid">
         <article class="card">
           <div class="pill">NEW</div>
@@ -172,21 +148,15 @@
         <h2 style="margin:8px 0 10px;">自己紹介</h2>
         <div class="list">
           <div class="item">
-            <div class="kv"><div class="k">名前</div><div class="v">ゆきえぬ</div></div>
+            <div class="kv"><div class="k">名前</div><div class="v">Siesta</div></div>
           </div>
           <div class="item">
-            <div class="kv"><div class="k">専攻</div><div class="v">物理学（大学1回生）</div></div>
-          </div>
-          <div class="item">
-            <div class="kv"><div class="k">好き</div><div class="v">Apex Legends / Web制作を勉強中 / ガジェット</div></div>
-          </div>
-          <div class="item">
-            <div class="kv"><div class="k">このサイトについて</div><div class="v">GitHub Pagesで公開。UIは“箱（カード）”を主体にしたガラス質感デザイン。</div></div>
+            <div class="kv"><div class="k">このサイトについて</div><div class="v">ガジェット製品の紹介や設定を紹介</div></div>
           </div>
         </div>
       </div>
 
-      <p class="footer">© <span id="y"></span> ゆきえぬ</p>
+      <p class="footer">© <span id="y"></span> Siesta</p>
     </section>
 
     <!-- Devices -->
@@ -300,11 +270,7 @@
     document.getElementById('y').textContent = new Date().getFullYear();
 
     // 簡易ハッシュルーター
-    const routes = {
-      '#home':'page-home',
-      '#devices':'page-devices',
-      '#apex':'page-apex'
-    };
+    const routes = { '#home':'page-home', '#devices':'page-devices', '#apex':'page-apex' };
     function render(){
       const hash = location.hash || '#home';
       document.querySelectorAll('.page').forEach(s=>s.classList.remove('active'));
@@ -314,7 +280,7 @@
     window.addEventListener('hashchange', render);
     render();
 
-    // テーマ切替（背景グラデ弱）
+    // テーマ切替（ライト/ダークの文字色だけ控えめに）
     function toggleTheme(){
       const on = document.body.dataset.light === '1';
       if(on){ delete document.body.dataset.light; document.documentElement.style.setProperty('--fg', '#e8eef6'); document.documentElement.style.setProperty('--muted','#a9b1bb'); }
