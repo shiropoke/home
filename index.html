@@ -124,19 +124,33 @@ body::before{
 .menu-btn span{
   display:block; width:18px; height:2px; background: var(--fg); border-radius:2px;
 }
-.menu-panel{
-  position:absolute; right:12px; top:52px; z-index:60;
-  display:flex; flex-direction:column; gap:6px; padding:10px;
-  min-width:160px; border-radius:12px;
-  border:1px solid rgba(255,255,255,.12);
-  background: var(--glass); backdrop-filter: blur(12px) saturate(140%);
-  box-shadow: var(--shadow);
+.menu-panel {
+  position: absolute;
+  top: 60px; /* ヘッダー高さに合わせる */
+  right: 20px;
+  background: rgba(20, 20, 20, 0.75); /* 透過度を下げて濃いめに */
+  backdrop-filter: blur(12px) saturate(150%); /* ガラス感強調 */
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border-radius: 12px;
+  padding: 12px 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35); /* 浮いてる感じを出す */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 999;
 }
-.menu-panel a{
-  display:block; padding:8px 10px; border-radius:8px; color:var(--fg); text-decoration:none;
-  border:1px solid transparent;
+
+.menu-panel a {
+  color: #fff; /* 見やすく白字 */
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
 }
-.menu-panel a:hover{ border-color: rgba(255,255,255,.20); }
+
+.menu-panel a:hover {
+  color: #66b2ff; /* アクセント（好みで変更OK） */
+}
+
 /* --- hamburger fixed top-right --- */
 .menu-btn{
   position: fixed; top: 10px; right: 12px; z-index: 100;
