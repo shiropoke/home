@@ -171,13 +171,28 @@ body::before{
 }
   /* hidden属性が付いたときは必ず非表示にする保険 */
 .menu-panel[hidden] { display: none !important; }
+/* --- brand (左上ロゴ) はボタン風スタイルを無効化 --- */
+.nav .brand { display:flex; align-items:center; }
+.nav .brand .brand-link{
+  padding:0; border:none; background:transparent; /* 余白・枠・背景リセット */
+  display:inline-flex; align-items:center;
+}
+.nav .brand .brand-link:hover{ border:none; background:transparent; } /* ホバー時も無効化 */
+.nav .brand .brand-logo{
+  height:36px; width:36px; border-radius:50%; display:block;
+  border:1px solid rgba(255,255,255,.12); /* 薄い縁が要らなければ消してOK */
+  box-shadow:none;
+}
+
+/* 既存の .nav a のスタイルが強い場合の保険 */
+.nav a.brand-link{ border:none !important; padding:0 !important; background:transparent !important; }
   </style>
 </head>
 <body>
   <header class="nav">
   <div class="brand">
-  <a href="#home">
-    <img src="icon.png" alt="Siesta Logo" style="height:40px; width:auto; border-radius:50%;">
+  <a href="#home" class="brand-link" aria-label="ホームへ">
+    <img src="icon.png" alt="Siesta" class="brand-logo">
   </a>
 </div>
   <a class="ghost" href="#home">ホーム</a>
